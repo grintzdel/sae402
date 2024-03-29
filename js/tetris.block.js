@@ -1,10 +1,12 @@
 window.Tetris = window.Tetris || {};
 
 class Utils {
+    // Clone un vecteur
     static cloneVector(v) {
         return { x: v.x, y: v.y, z: v.z };
     }
 
+    // Arrondit les coordonnées d'un vecteur à l'entier le plus proche
     static roundVector(v) {
         v.x = Math.round(v.x);
         v.y = Math.round(v.y);
@@ -13,6 +15,7 @@ class Utils {
 }
 
 class Block {
+    // Définition des formes possibles pour les blocs
     static shapes = [
         [
             { x: 0, y: 0, z: 0 },
@@ -47,6 +50,7 @@ class Block {
 
     static position = {};
 
+    // Génère un nouveau bloc dans le jeu
     static generate() {
         const geometry = new THREE.CubeGeometry(Tetris.blockSize, Tetris.blockSize, Tetris.blockSize);
         const type = Math.floor(Math.random() * Tetris.Block.shapes.length);
@@ -84,6 +88,7 @@ class Block {
         Tetris.scene.add(Tetris.Block.mesh);
     }
 
+    // Fait tourner le bloc actuel
     static rotate(x, y, z) {
         Tetris.Block.mesh.rotation.x += x * Math.PI / 180;
         Tetris.Block.mesh.rotation.y += y * Math.PI / 180;
@@ -102,6 +107,7 @@ class Block {
         }
     }
 
+    // Déplace le bloc actuel
     static move(x, y, z) {
         Tetris.Block.mesh.position.x += x * Tetris.blockSize;
         Tetris.Block.position.x += x;
@@ -126,6 +132,7 @@ class Block {
         }
     }
 
+    // rend immobile le bloc actuel
     static petrify() {
         const shape = Tetris.Block.shape;
         for (let i = 0; i < shape.length; i++) {
@@ -134,6 +141,8 @@ class Block {
         }
     }
 
+
+    // Gère ce qui se passe lorsque le bloc actuel atteint le bas du plateau de jeu
     static hitBottom() {
         Tetris.Block.petrify();
         Tetris.scene.removeObject(Tetris.Block.mesh);
