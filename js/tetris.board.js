@@ -12,11 +12,11 @@ Tetris.Board.fields = []; // Initialisation du tableau représentant le plateau
 
 // Fonction d'initialisation du plateau
 Tetris.Board.init = function (_x, _y, _z) {
-    for (var x = 0; x < _x; x++) {
+    for (let x = 0; x < _x; x++) {
         Tetris.Board.fields[x] = [];
-        for (var y = 0; y < _y; y++) {
+        for (let y = 0; y < _y; y++) {
             Tetris.Board.fields[x][y] = [];
-            for (var z = 0; z < _z; z++) {
+            for (let z = 0; z < _z; z++) {
                 Tetris.Board.fields[x][y][z] = Tetris.Board.FIELD.EMPTY; // Remplissage du plateau avec des cellules vides
             }
         }
@@ -25,10 +25,10 @@ Tetris.Board.init = function (_x, _y, _z) {
 
 // Fonction de test de collision des pièces avec le plateau
 Tetris.Board.testCollision = function (ground_check) {
-    var x, y, z, i;
+    let x, y, z, i;
 
-    var fields = Tetris.Board.fields;
-    var posx = Tetris.Block.position.x, posy = Tetris.Block.position.y, posz = Tetris.Block.position.z, shape = Tetris.Block.shape;
+    let fields = Tetris.Board.fields;
+    let posx = Tetris.Block.position.x, posy = Tetris.Block.position.y, posz = Tetris.Block.position.z, shape = Tetris.Block.shape;
 
     for (i = 0; i < shape.length; i++) {
         if ((shape[i].x + posx) < 0 || (shape[i].y + posy) < 0 || (shape[i].x + posx) >= fields.length || (shape[i].y + posy) >= fields[0].length) {
@@ -47,22 +47,22 @@ Tetris.Board.testCollision = function (ground_check) {
 
 // Fonction de vérification des lignes complétées sur le plateau
 Tetris.Board.checkCompleted = function() {
-    var x, y, z, x2, y2, z2, fields = Tetris.Board.fields;
-    var rebuild = false;
+    let x, y, z, x2, y2, z2, fields = Tetris.Board.fields;
+    let rebuild = false;
 
-    var sum, expected = fields[0].length * fields.length, bonus = 0;
+    let sum, expected = fields[0].length * fields.length, bonus = 0;
 
     for(z = 0; z < fields[0][0].length; z++) {
         sum = 0;
         for(y = 0; y < fields[0].length; y++) {
             for(x = 0; x < fields.length; x++) {
                 if(fields[x][y][z] === Tetris.Board.FIELD.PETRIFIED) sum++; // Compte les cellules pétrifiées
-            }                
+            }
         }
 
         if(sum == expected) {
             bonus += 1 + bonus; // Calcule le bonus pour les lignes complétées (1, 3, 7, 15...)
-            
+
             // Suppression de la ligne complétée
             for(y2 = 0; y2 < fields[0].length; y2++) {
                 for(x2 = 0; x2 < fields.length; x2++) {
@@ -70,7 +70,7 @@ Tetris.Board.checkCompleted = function() {
                         Tetris.Board.fields[x2][y2][z2] = fields[x2][y2][z2 + 1];
                     }
                     Tetris.Board.fields[x2][y2][fields[0][0].length - 1] = Tetris.Board.FIELD.EMPTY;
-                }                
+                }
             }
             rebuild = true;
             z--;
@@ -81,9 +81,9 @@ Tetris.Board.checkCompleted = function() {
     }
     if(rebuild) {
         // Réorganisation des blocs pétrifiés
-        for(var z = 0; z < fields[0][0].length - 1; z++) {
-            for(var y = 0; y < fields[0].length; y++) {
-                for(var x = 0; x < fields.length; x++) {
+        for(let z = 0; z < fields[0][0].length - 1; z++) {
+            for(let y = 0; y < fields[0].length; y++) {
+                for(let x = 0; x < fields.length; x++) {
                     if(fields[x][y][z] === Tetris.Board.FIELD.PETRIFIED && !Tetris.staticBlocks[x][y][z]) {
                         Tetris.addStaticBlock(x,y,z); // Ajout d'un bloc statique pour les cellules pétrifiées
                     }
@@ -91,8 +91,8 @@ Tetris.Board.checkCompleted = function() {
                         Tetris.scene.removeObject(Tetris.staticBlocks[x][y][z]); // Suppression des blocs statiques inutiles
                         Tetris.staticBlocks[x][y][z] = undefined;
                     }
-                }                
+                }
             }
-        }        
+        }
     }
 };

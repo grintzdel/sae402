@@ -54,7 +54,9 @@ class Block {
     // Génère un nouveau bloc dans le jeu
     static generate() {
 
-        let shaderMaterial = new THREE.ShaderMaterial({
+        Tetris.shaders = [];
+
+        Tetris.shaders.push(new THREE.ShaderMaterial({
             uniforms: {
             },
             vertexShader: `
@@ -77,7 +79,32 @@ class Block {
                     gl_FragColor = vec4( vec3( color, color * 0.5, sin( color + 2.0/3.0 ) * 0.75 ), 1.0 );
                 }
                 `
-        });
+        }));
+
+        Tetris.shaders.push(new THREE.ShaderMaterial({
+            uniforms: {
+            },
+            vertexShader: `
+                void main() {
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+                `,
+            fragmentShader: `
+            uniform float time;
+            
+                void main() {
+                    float color = 0.0;
+                
+                    color += cos( gl_FragCoord.x * sin( 2.0/15.0 ) * 20.0 );
+                    color += cos( gl_FragCoord.y * cos( 8.0/10.0 ) * 40.0 );
+                    color += sin( gl_FragCoord.x * cos( 3.0/5.0 ) * 10.0 );
+                
+                    color *= sin( 5.0/10.0 ) * 0.5;
+                
+                    gl_FragColor = vec4( vec3( color, color * 0.5, sin( color + 2.0/3.0 ) * 0.75 ), 1.0 );
+                }
+                `
+        }));
 
         const geometry = new THREE.CubeGeometry(Tetris.blockSize, Tetris.blockSize, Tetris.blockSize);
         const type = Math.floor(Math.random() * Tetris.Block.shapes.length);
@@ -91,9 +118,12 @@ class Block {
             THREE.GeometryUtils.merge(geometry, tmpGeometry);
         }
 
+        let randomShader = Tetris.shaders[Math.floor(Math.random() * Tetris.shaders.length)];
+
+
         Tetris.Block.mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [
             new THREE.MeshBasicMaterial({ color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true }),
-            shaderMaterial
+            randomShader
         ]);
 
         // initial position
