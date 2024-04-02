@@ -4,8 +4,8 @@ if (!window.requestAnimationFrame) {
             window.mozRequestAnimationFrame ||
             window.oRequestAnimationFrame ||
             window.msRequestAnimationFrame ||
-            function (/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
-                window.setTimeout(callback, 1000 / 60);
+            function ( callback,  element ) {
+                window.setTimeout( callback, 1000 / 60);
             };
     })();
 }
@@ -22,11 +22,11 @@ Tetris.init = function () {
 
     Tetris.sounds["theme"].play();
     // set the scene size
-    var WIDTH = window.innerWidth,
+    let WIDTH = window.innerWidth,
         HEIGHT = window.innerHeight;
 
     // setup de la caméra + loins
-    var VIEW_ANGLE = 60,
+    let VIEW_ANGLE = 60,
         ASPECT = WIDTH / HEIGHT,
         NEAR = 0.1,
         FAR = 10000;
@@ -51,7 +51,7 @@ Tetris.init = function () {
     document.body.appendChild(Tetris.renderer.domElement);
 
     // configuration object
-    var boundingBoxConfig = {
+    let boundingBoxConfig = {
         width:360,
         height:360,
         depth:1200,
@@ -64,7 +64,7 @@ Tetris.init = function () {
 
     Tetris.Board.init(boundingBoxConfig.splitX, boundingBoxConfig.splitY, boundingBoxConfig.splitZ);
 
-    var boundingBox = new THREE.Mesh(
+    let boundingBox = new THREE.Mesh(
         new THREE.CubeGeometry(boundingBoxConfig.width, boundingBoxConfig.height, boundingBoxConfig.depth, boundingBoxConfig.splitX, boundingBoxConfig.splitY, boundingBoxConfig.splitZ),
         new THREE.MeshBasicMaterial({ color:0xff000, wireframe:true })
     );
@@ -88,9 +88,9 @@ Tetris.start = function () {
     document.getElementById("menu").style.display = "none";
     Tetris.pointsDOM = document.getElementById("points");
     Tetris.pointsDOM.style.display = "block";
-	
+
     Tetris.sounds["theme"].pause();
-	
+
     Tetris.Block.generate();
     Tetris.animate();
 };
@@ -105,7 +105,8 @@ Tetris._lastSpeedIncrease = Date.now(); // timestamp for last speed increase
 Tetris.gameOver = false;
 
 Tetris.animate = function () {
-    var time = Date.now();
+
+    let time = Date.now();
     Tetris.frameTime = time - Tetris._lastFrameTime;
     Tetris._lastFrameTime = time;
     Tetris.cumulatedFrameTime += Tetris.frameTime;
@@ -115,13 +116,14 @@ Tetris.animate = function () {
         Tetris.Block.move(0, 0, -1);
     }
 
+
     Tetris.renderer.render(Tetris.scene, Tetris.camera);
 
     Tetris.stats.update();
 
     if (!Tetris.gameOver) {
         window.requestAnimationFrame(Tetris.animate);
-        
+
         // Augmenter la vitesse toutes les 10 secondes
         if (time - Tetris._lastSpeedIncrease >= 10000) {
             Tetris.gameStepTime -= 50;
@@ -132,7 +134,7 @@ Tetris.animate = function () {
 
 
 // nice test:
-// var i = 0, j = 0, k = 0, interval = setInterval(function() {if(i==6) {i=0;j++;} if(j==6) {j=0;k++;} if(k==6) {clearInterval(interval); return;} Tetris.addStaticBlock(i,j,k); i++;},30)
+// let i = 0, j = 0, k = 0, interval = setInterval(function() {if(i==6) {i=0;j++;} if(j==6) {j=0;k++;} if(k==6) {clearInterval(interval); return;} Tetris.addStaticBlock(i,j,k); i++;},30)
 
 Tetris.staticBlocks = [];
 Tetris.zColors = [
@@ -142,7 +144,7 @@ Tetris.addStaticBlock = function (x, y, z) {
     if (Tetris.staticBlocks[x] === undefined) Tetris.staticBlocks[x] = [];
     if (Tetris.staticBlocks[x][y] === undefined) Tetris.staticBlocks[x][y] = [];
 
-    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.CubeGeometry(Tetris.blockSize, Tetris.blockSize, Tetris.blockSize), [
+    let mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.CubeGeometry(Tetris.blockSize, Tetris.blockSize, Tetris.blockSize), [
         new THREE.MeshBasicMaterial({color:0x000000, shading:THREE.FlatShading, wireframe:true, transparent:true}),
         new THREE.MeshBasicMaterial({color:Tetris.zColors[z]})
     ]);
@@ -166,7 +168,7 @@ Tetris.addPoints = function (n) {
 window.addEventListener("load", Tetris.init);
 
 window.addEventListener('keydown', function (event) {
-    var key = event.which ? event.which : event.keyCode;
+    let key = event.which ? event.which : event.keyCode;
 
     switch (key) {
         //case

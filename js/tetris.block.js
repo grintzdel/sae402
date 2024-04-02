@@ -65,8 +65,6 @@ class Block {
                 }
                 `,
             fragmentShader: `
-            uniform float time;
-            
                 void main() {
                     float color = 0.0;
                 
@@ -90,10 +88,8 @@ class Block {
                 }
                 `,
             fragmentShader: `
-            uniform float time;
-            
                 void main() {
-                    float color = 0.0;
+                    float color = 3.2;
                 
                     color += cos( gl_FragCoord.x * sin( 2.0/15.0 ) * 20.0 );
                     color += cos( gl_FragCoord.y * cos( 8.0/10.0 ) * 40.0 );
@@ -105,6 +101,50 @@ class Block {
                 }
                 `
         }));
+
+        Tetris.shaders.push(new THREE.ShaderMaterial({
+            uniforms: {
+            },
+            vertexShader: `
+                void main() {
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+                `,
+            fragmentShader: `
+                void main() {
+                    float color = 6.3;
+                
+                    color += cos( gl_FragCoord.x * sin( 2.0/15.0 ) * 20.0 );
+                    color += cos( gl_FragCoord.y * cos( 8.0/10.0 ) * 40.0 );
+                    color += sin( gl_FragCoord.x * sin( 4.0/5.0 ) * 10.0 );
+                    color *= sin( 7.0/10.0 ) * 0.5;
+                
+                    gl_FragColor = vec4( vec3( color, color * 0.5, sin( color + 2.0/3.0 ) * 0.75 ), 1.0 );
+                }
+                `
+        }));
+
+        Tetris.shaders.push(new THREE.ShaderMaterial({
+            uniforms: {
+            },
+            vertexShader: `
+                void main() {
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+                `,
+            fragmentShader: `
+                void main() {
+                    float color = 7.3;
+                   
+                    color *= cos( gl_FragCoord.x * sin( 2.0/15.0 ) * 20.0 );
+                    color *= cos( gl_FragCoord.y * cos( 8.0/10.0 ) * 40.0 );
+                    color += sin( 5.0/10.0 ) * 0.5;
+                
+                    gl_FragColor = vec4( vec3( color, color * 0.5, sin( color + 2.0/3.0 ) * 0.75 ), 1.0 );
+                }
+                `
+        }));
+
 
         const geometry = new THREE.CubeGeometry(Tetris.blockSize, Tetris.blockSize, Tetris.blockSize);
         const type = Math.floor(Math.random() * Tetris.Block.shapes.length);
