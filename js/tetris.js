@@ -66,7 +66,7 @@ Tetris.init = function () {
 
     var boundingBox = new THREE.Mesh(
         new THREE.CubeGeometry(boundingBoxConfig.width, boundingBoxConfig.height, boundingBoxConfig.depth, boundingBoxConfig.splitX, boundingBoxConfig.splitY, boundingBoxConfig.splitZ),
-        new THREE.MeshBasicMaterial({ color:0xffaa00, wireframe:true })
+        new THREE.MeshBasicMaterial({ color:0xff000, wireframe:true })
     );
     Tetris.scene.add(boundingBox);
 
@@ -95,11 +95,12 @@ Tetris.start = function () {
     Tetris.animate();
 };
 
-Tetris.gameStepTime = 200;
+Tetris.gameStepTime = 500;
 
 Tetris.frameTime = 0; // ms
 Tetris.cumulatedFrameTime = 0; // ms
 Tetris._lastFrameTime = Date.now(); // timestamp
+Tetris._lastSpeedIncrease = Date.now(); // timestamp for last speed increase
 
 Tetris.gameOver = false;
 
@@ -118,7 +119,15 @@ Tetris.animate = function () {
 
     Tetris.stats.update();
 
-    if (!Tetris.gameOver) window.requestAnimationFrame(Tetris.animate);
+    if (!Tetris.gameOver) {
+        window.requestAnimationFrame(Tetris.animate);
+        
+        // Augmenter la vitesse toutes les 10 secondes
+        if (time - Tetris._lastSpeedIncrease >= 10000) {
+            Tetris.gameStepTime -= 50;
+            Tetris._lastSpeedIncrease = time;
+        }
+    }
 };
 
 
@@ -199,5 +208,4 @@ window.addEventListener('keydown', function (event) {
             Tetris.Block.rotate(0, -90, 0);
             break;
     }
-}, false);	
-
+}, false);
