@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AHAHAH</title>
+    <title>THREE-TRIS</title>
     
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<!-- Partie dans le code ou on appelle les fichier audio que l'on a setup dans le fichier music et dans Tetris.js  --> 
 <audio id="audio_theme" src="music/tetris.mp3" preload="auto"></audio>
 <audio id="audio_move" src="music/move.mp3" preload="auto"></audio>
 <audio id="audio_collision" src="music/collision.mp3" preload="auto"></audio>
 <audio id="audio_gameover" src="music/gameover.mp4" preload="auto"></audio>
 <audio id="audio_score" src="music/cash.mp3" preload="auto"></audio>
+<!--Fin  --> 
 
+<!-- Partie  AFfichafe du menu de démarrage  --> 
 <div id="menu">
-    <h1>AUBAGUE OUDIN TETRIS</h1>
+    <h1>THREE-TRIS</h1>
     <button id="play_button">Play</button>
 </div>
-
+<!--Fin  --> 
+<!--Affichage des points et de Game Over  --> 
 <div id="points" class="hide">
     0
 </div>
+<!--Fin  -->
 
+<!-- On appelle les fichier JS   -->
 <script type="text/javascript" src="js/Three.js"></script>
 <script type="text/javascript" src="js/Stats.js"></script>
 <script type="text/javascript" src="js/tetris.js"></script>
 <script type="text/javascript" src="js/tetris.board.js"></script>
 <script type="text/javascript" src="js/tetris.block.js"></script>
+
 </body>
 </html>
