@@ -14,19 +14,19 @@ window.Tetris = window.Tetris || {};
 Tetris.sounds = {};
 
 Tetris.init = function () {
-    Tetris.sounds["theme"] = document.getElementById("audio_theme");  
-    Tetris.sounds["collision"] = document.getElementById("audio_collision");  
-    Tetris.sounds["move"] = document.getElementById("audio_move");  
-    Tetris.sounds["gameover"] = document.getElementById("audio_gameover");  
-    Tetris.sounds["score"] = document.getElementById("audio_score");  
+    Tetris.sounds["theme"] = document.getElementById("audio_theme");     /* Je met les sons ici */
+    Tetris.sounds["collision"] = document.getElementById("audio_collision");   /* Je met les sons ici */
+    Tetris.sounds["move"] = document.getElementById("audio_move");   /* Je met les sons ici */
+    Tetris.sounds["gameover"] = document.getElementById("audio_gameover");   /* Je met les sons ici */
+    Tetris.sounds["score"] = document.getElementById("audio_score");  /* Je met les sons ici */
 
     Tetris.sounds["theme"].play();
     // set the scene size
     var WIDTH = window.innerWidth,
         HEIGHT = window.innerHeight;
 
-    // set some camera attributes
-    var VIEW_ANGLE = 45,
+    // setup de la caméra + loins
+    var VIEW_ANGLE = 60,
         ASPECT = WIDTH / HEIGHT,
         NEAR = 0.1,
         FAR = 10000;
@@ -73,9 +73,9 @@ Tetris.init = function () {
     Tetris.renderer.render(Tetris.scene, Tetris.camera);
 
     Tetris.stats = new Stats();
-    Tetris.stats.domElement.style.position = 'absolute';
-    Tetris.stats.domElement.style.top = '10px';
-    Tetris.stats.domElement.style.left = '10px';
+    // Tetris.stats.domElement.style.position = 'absolute';
+    // Tetris.stats.domElement.style.top = '10px';
+    // Tetris.stats.domElement.style.left = '10px';
     document.body.appendChild(Tetris.stats.domElement);
 
     document.getElementById("play_button").addEventListener('click', function (event) {
