@@ -18,40 +18,67 @@ class Block {
     // Définition des formes possibles pour les blocs
     static shapes = [
         [
-            { x: 0, y: 0, z: 0 },
-            { x: 1, y: 0, z: 0 },
-            { x: 1, y: 1, z: 0 },
-            { x: 1, y: 2, z: 0 }
+            {x: 0, y: 0, z: 0},
+            {x: 1, y: 0, z: 0},
+            {x: 1, y: 1, z: 0},
+            {x: 1, y: 2, z: 0}
         ],
         [
-            { x: 0, y: 0, z: 0 },
-            { x: 0, y: 1, z: 0 },
-            { x: 0, y: 2, z: 0 },
+            {x: 0, y: 0, z: 0},
+            {x: 0, y: 1, z: 0},
+            {x: 0, y: 2, z: 0},
         ],
         [
-            { x: 0, y: 0, z: 0 },
-            { x: 0, y: 1, z: 0 },
-            { x: 1, y: 0, z: 0 },
-            { x: 1, y: 1, z: 0 }
+            {x: 0, y: 0, z: 0},
+            {x: 0, y: 1, z: 0},
+            {x: 1, y: 0, z: 0},
+            {x: 1, y: 1, z: 0}
         ],
         [
-            { x: 0, y: 0, z: 0 },
-            { x: 0, y: 1, z: 0 },
-            { x: 0, y: 2, z: 0 },
-            { x: 1, y: 1, z: 0 }
+            {x: 0, y: 0, z: 0},
+            {x: 0, y: 1, z: 0},
+            {x: 0, y: 2, z: 0},
+            {x: 1, y: 1, z: 0}
         ],
         [
-            { x: 0, y: 0, z: 0 },
-            { x: 0, y: 1, z: 0 },
-            { x: 1, y: 1, z: 0 },
-            { x: 1, y: 2, z: 0 }
+            {x: 0, y: 0, z: 0},
+            {x: 0, y: 1, z: 0},
+            {x: 1, y: 1, z: 0},
+            {x: 1, y: 2, z: 0}
         ]
     ];
 
     static position = {};
 
+
     // Génère un nouveau bloc dans le jeu
     static generate() {
+
+        let shaderMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+            },
+            vertexShader: `
+                void main() {
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+                `,
+            fragmentShader: `
+            uniform float time;
+            
+                void main() {
+                    float color = 0.0;
+                
+                    color += sin( gl_FragCoord.x * cos( 10.0/15.0 ) * 80.0 );
+                    color += sin( gl_FragCoord.y * sin( 8.0/10.0 ) * 40.0 );
+                    color += sin( gl_FragCoord.x * sin( 3.0/5.0 ) * 10.0 );
+                
+                    color *= sin( 5.0/10.0 ) * 0.5;
+                
+                    gl_FragColor = vec4( vec3( color, color * 0.5, sin( color + 2.0/3.0 ) * 0.75 ), 1.0 );
+                }
+                `
+        });
+
         const geometry = new THREE.CubeGeometry(Tetris.blockSize, Tetris.blockSize, Tetris.blockSize);
         const type = Math.floor(Math.random() * Tetris.Block.shapes.length);
         this.blockType = type;
@@ -66,7 +93,7 @@ class Block {
 
         Tetris.Block.mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [
             new THREE.MeshBasicMaterial({ color: 0x000000, shading: THREE.FlatShading, wireframe: true, transparent: true }),
-            new THREE.MeshBasicMaterial({ color: 0xff0000 })
+            shaderMaterial
         ]);
 
         // initial position
